@@ -1,0 +1,45 @@
+[project]
+name = "des-contracts"
+version = "0.1.0"
+description = "Shared contracts for the Digital Earth Sweden agentic workflow: unified class schema, Analyzer base, KG JSON Schema, embedding manifest."
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "Proprietary"}
+authors = [{name = "Tobias Edman"}]
+keywords = ["earth-observation", "satellite", "imint", "agentic-workflow"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+
+# Intentionally NO runtime deps. This package is contracts only — data
+# classes, dataclass-like records, JSON Schema strings. Consumers bring
+# whatever runtime they need (pydantic, numpy, torch, etc.) themselves.
+dependencies = []
+
+[project.optional-dependencies]
+# pydantic only if a consumer wants the Pydantic-flavored KG contract.
+# Most callers will use the JSON Schema directly.
+pydantic = ["pydantic>=2.5,<3"]
+
+dev = [
+  "pytest>=8.0",
+  "mypy>=1.10",
+  "ruff>=0.6",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["des_contracts*"]
+
+[tool.pytest.ini_options]
+testpaths = ["des_contracts/tests"]
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

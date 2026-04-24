@@ -1,0 +1,99 @@
+name: CI
+
+# des-contracts CI. Per agentic_workflow rollout plan W3.1.
+# This package is contracts-only — no numpy / no heavy deps — so the
+# base import + pytest matrix is intentionally slim and fast.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: pytest (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install (editable + dev extras)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Import smoke — base package imports without numpy
+        run: |
+          python -c "from des_contracts import UNIFIED_CLASSES, Analyzer, EMBEDDING_CONFIG; print('OK')"
+
+      - name: Pytest
+        run: pytest
+
+  schema-ops-optional:
+    name: numpy ops (optional)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install (with numpy)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          pip install numpy
+
+      - name: Numpy-backed merge_all smoke
+        run: |
+          python -c "
+          import numpy as np
+          from des_contracts.schema.ops import merge_all, nmd19_to_unified
+
+          # Trivial case: NMD forest_pine (1) → unified tallskog (1)
+          nmd = np.array([[1, 2], [3, 4]], dtype=np.uint8)
+          u = nmd19_to_unified(nmd)
+          assert u[0,0] == 1, u
+          assert u[0,1] == 2, u
+
+          # Merge: SJV code 9 (majs) should override NMD cropland (12)
+          nmd = np.full((3, 3), 12, dtype=np.uint8)
+          lpis = np.full((3, 3), 9, dtype=np.uint16)
+          merged = merge_all(nmd, lpis_mask=lpis)
+          assert (merged == 21).all(), merged  # all pixels → majs
+
+          # SKS harvest overlay on forest
+          nmd = np.full((2, 2), 1, dtype=np.uint8)  # all pine
+          harvest = np.array([[1, 0], [1, 0]], dtype=np.uint8)
+          merged = merge_all(nmd, harvest_mask=harvest)
+          assert merged[0,0] == 22  # hygge
+          assert merged[0,1] == 1   # still tallskog
+          print('OK: merge_all behaves correctly')
+          "
+
+  lint:
+    name: ruff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: ruff check des_contracts/
