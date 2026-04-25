@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Shared contracts for the Digital Earth Sweden agentic workflow: unified class schema, Analyzer base, KG JSON Schema, embedding manifest."
 requires-python = ">=3.11"
 readme = "README.md"
-license = {text = "Proprietary"}
+license = {text = "MIT"}
 authors = [{name = "Tobias Edman"}]
 keywords = ["earth-observation", "satellite", "imint", "agentic-workflow"]
 classifiers = [
