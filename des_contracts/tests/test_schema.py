@@ -15,8 +15,8 @@ from des_contracts.schema import (
     SCHEMA_VERSION,
     SJV_DEFAULT,
     SJV_TO_UNIFIED,
-    UNIFIED_CLASSES,
     UNIFIED_CLASS_NAMES,
+    UNIFIED_CLASSES,
     UNIFIED_COLORS,
     class_name,
 )

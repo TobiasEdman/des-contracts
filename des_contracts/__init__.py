@@ -19,13 +19,6 @@ __version__ = "0.1.0"
 
 # Top-level re-exports. Keep this list short — each import is a small contract
 # that consuming code will lean on. Breaking any of them requires a major bump.
-from des_contracts.schema import (
-    SCHEMA_VERSION,
-    UNIFIED_CLASSES,
-    SJV_TO_UNIFIED,
-    NMD_TO_UNIFIED,
-    class_name,
-)
 from des_contracts.analyzer import (
     Analyzer,
     AnalyzerInput,
@@ -33,8 +26,15 @@ from des_contracts.analyzer import (
     AnalyzerStatus,
 )
 from des_contracts.rag import EMBEDDING_CONFIG, EmbeddingConfig
+from des_contracts.schema import (
+    NMD_TO_UNIFIED,
+    SCHEMA_VERSION,
+    SJV_TO_UNIFIED,
+    UNIFIED_CLASSES,
+    class_name,
+)
 
-__all__ = [
+__all__ = [  # noqa: RUF022 — grouped by subpackage (see comments), not alphabetised
     "__version__",
     # schema
     "SCHEMA_VERSION",

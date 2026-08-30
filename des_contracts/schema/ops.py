@@ -147,8 +147,8 @@ def get_class_weights(
 
 
 __all__ = [
-    "nmd19_to_unified",
-    "merge_nmd_sjv",
-    "merge_all",
     "get_class_weights",
+    "merge_all",
+    "merge_nmd_sjv",
+    "nmd19_to_unified",
 ]

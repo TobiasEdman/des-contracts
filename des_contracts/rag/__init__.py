@@ -70,6 +70,6 @@ EMBEDDING_CONFIG = EmbeddingConfig(
 
 
 __all__ = [
-    "EmbeddingConfig",
     "EMBEDDING_CONFIG",
+    "EmbeddingConfig",
 ]
