@@ -31,7 +31,8 @@ Example manifest:
 """
 from __future__ import annotations
 
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 
 # Minimum fields every registry entry must provide.
 REQUIRED_FIELDS = frozenset({
@@ -143,11 +144,11 @@ def list_entries(manifest: dict[str, Any]) -> Iterable[tuple[str, dict[str, Any]
 
 
 __all__ = [
-    "REQUIRED_FIELDS",
     "KNOWN_FIELDS",
-    "VALID_STATUSES",
+    "REQUIRED_FIELDS",
     "VALID_PRECISIONS",
-    "validate_registry_entry",
-    "validate_manifest",
+    "VALID_STATUSES",
     "list_entries",
+    "validate_manifest",
+    "validate_registry_entry",
 ]

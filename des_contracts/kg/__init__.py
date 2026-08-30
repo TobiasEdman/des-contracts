@@ -202,19 +202,7 @@ def validate_against(
             allowed_types = [expected]
         type_ok = False
         for t in allowed_types:
-            if t == "object" and isinstance(got, dict):
-                type_ok = True
-            elif t == "array" and isinstance(got, list):
-                type_ok = True
-            elif t == "string" and isinstance(got, str):
-                type_ok = True
-            elif t == "number" and isinstance(got, (int, float)) and not isinstance(got, bool):
-                type_ok = True
-            elif t == "integer" and isinstance(got, int) and not isinstance(got, bool):
-                type_ok = True
-            elif t == "boolean" and isinstance(got, bool):
-                type_ok = True
-            elif t == "null" and got is None:
+            if t == "object" and isinstance(got, dict) or t == "array" and isinstance(got, list) or t == "string" and isinstance(got, str) or t == "number" and isinstance(got, (int, float)) and not isinstance(got, bool) or t == "integer" and isinstance(got, int) and not isinstance(got, bool) or t == "boolean" and isinstance(got, bool) or t == "null" and got is None:
                 type_ok = True
         if not type_ok:
             errors.append(

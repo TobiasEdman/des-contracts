@@ -1,4 +1,6 @@
 """Tests for the Analyzer protocol and result dataclasses."""
+from typing import ClassVar
+
 from des_contracts.analyzer import (
     Analyzer,
     AnalyzerInput,
@@ -35,7 +37,7 @@ class _ConformingAnalyzer:
     name = "test"
     version = "0.1.0"
     supports_throttle = False
-    precision_modes = ["fp32"]
+    precision_modes: ClassVar[list[str]] = ["fp32"]
 
     def configure(self, config):
         self._config = config
@@ -60,7 +62,7 @@ def test_runtime_protocol_rejects_missing_method():
         name = "x"
         version = "0.1.0"
         supports_throttle = False
-        precision_modes = ["fp32"]
+        precision_modes: ClassVar[list[str]] = ["fp32"]
 
         def configure(self, config):
             pass
